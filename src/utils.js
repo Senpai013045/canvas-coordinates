@@ -1,6 +1,33 @@
 //@ts-check
 
-import { extractBounds } from "../test";
+//get ratio from search params
+const url = new URL(window.location.href)
+const ratio = Number(url.searchParams.get('ratio')) || 1
+
+
+/**
+ *
+ * @param {string} str String in format "[0,0][1080,80]"
+ * @returns {{
+ *  x1: number,
+ * y1: number,
+ * x2: number,
+ * y2: number
+ * }}
+ */
+ export const extractBounds = (str) => {
+    let [start, end] = str
+      .slice(1, -1)
+      .split("][")
+      .map((x) => x.split(",").map((y) => parseInt(y)));
+    return {
+      x1: start[0]/ratio,
+      y1: start[1]/ratio,
+      x2: end[0]/ratio,
+      y2: end[1]/ratio,
+    };
+  };
+  
 
 /*
 //sample xml
@@ -152,6 +179,7 @@ export const width = (coords)=>{
  * @param {Node[]} nodes
  */
 export const getClosest = (coords, nodes) => {
+    
     const filtered = nodes.filter((node) => {
         const { x1, y1, x2, y2 } = node.bounds;
         return (
@@ -197,3 +225,4 @@ export const getRandomColor = ()=>{
     }
     return color;
 }
+
