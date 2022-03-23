@@ -2,6 +2,8 @@
 import { useState,useMemo,useRef,useEffect } from "react";
 import { initialXML } from "./MOCK";
 import { getClosest, getJSONFromXML, getRandomColor, height, width } from "./utils";
+//@ts-ignore
+import img from "./img.jpg";
 
 
 function App() {
@@ -48,6 +50,13 @@ function App() {
    if(cnv){
      const ctx = cnv.getContext('2d');
      ctx.clearRect(0,0,cnv.width,cnv.height)
+     //draw the image over it
+     const image = new Image()
+      image.src = img
+      image.onload = ()=>{
+        ctx.drawImage(image,0,0,cnv.width,cnv.height)
+      }
+     
      json.forEach(node=>{
        const text = node["resourceId"];
         const {x1,y1,x2,y2} = node.bounds;
